@@ -7,7 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.66" />
+    <PackageReference Include="dbup-postgresql" Version="5.0.40" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Infrastructure/Migrations/*.sql" />
   </ItemGroup>
 
 </Project>

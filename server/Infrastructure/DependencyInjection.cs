@@ -49,5 +49,7 @@ public static class DependencyInjection
     private static void ConfigureServices(IServiceCollection services)
     {
         services.AddSingleton<IConnectionFactory, ConnectionFactory>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IUserRepository, UserRepository>();
     }
 }

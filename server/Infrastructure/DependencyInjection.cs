@@ -1,5 +1,6 @@
 using System.Reflection;
 using DbUp;
+using server.Infrastructure.Factories;
 
 namespace server.Infrastructure;
 
@@ -11,6 +12,7 @@ public static class DependencyInjection
     )
     {
         ConfigureDb(configuration);
+        ConfigureServices(services);
 
         return services;
     }
@@ -42,5 +44,10 @@ public static class DependencyInjection
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("Success!");
         Console.ResetColor();
+    }
+
+    private static void ConfigureServices(IServiceCollection services)
+    {
+        services.AddSingleton<IConnectionFactory, ConnectionFactory>();
     }
 }

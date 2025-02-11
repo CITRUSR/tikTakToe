@@ -7,12 +7,15 @@ namespace server.Infrastructure.Repositories;
 
 public class UnitOfWork : IUnitOfWork
 {
+    public IUserRepository UserRepository { get; }
     private readonly DbConnection _connection;
     private DbTransaction _transaction;
     private bool _isDisposed;
 
-    public UnitOfWork(IConnectionFactory connectionFactory)
+    public UnitOfWork(IConnectionFactory connectionFactory, IUserRepository userRepository)
     {
+        UserRepository = userRepository;
+
         _connection = connectionFactory.CreateConnection();
 
         _connection.Open();

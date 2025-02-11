@@ -1,6 +1,8 @@
 using System.Reflection;
 using DbUp;
+using server.Application.Contracts.Repositories;
 using server.Infrastructure.Factories;
+using server.Infrastructure.Repositories;
 
 namespace server.Infrastructure;
 

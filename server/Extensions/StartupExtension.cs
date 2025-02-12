@@ -1,5 +1,7 @@
 using server.Application;
+using server.Endpoints;
 using server.Infrastructure;
+using server.Middlewares;
 
 namespace server.Extensions;
 
@@ -10,7 +12,8 @@ public static class StartupExtension
         IConfiguration configuration
     )
     {
-        services.AddOpenApi();
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen();
         services.AddInfrastructure(configuration);
         services.AddApplication();
     }
@@ -21,9 +24,18 @@ public static class StartupExtension
 
         if (app.Environment.IsDevelopment())
         {
-            app.MapOpenApi();
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
 
         app.UseHttpsRedirection();
+        MapEndpoints(app);
+
+        app.UseMiddleware<GlobalExceptionHandler>();
+    }
+
+    private static void MapEndpoints(IEndpointRouteBuilder builder)
+    {
+        UserEndpoints.Map(builder);
     }
 }

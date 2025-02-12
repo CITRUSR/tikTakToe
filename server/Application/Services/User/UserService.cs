@@ -1,6 +1,8 @@
 using Mapster;
 using server.Application.Contracts.Repositories;
 using server.Application.Contracts.Services;
+using server.Application.Services.User.Dtos.Requests.GetUserById;
+using server.Application.Services.User.Dtos.Requests.GetUserByNickname;
 using server.Application.Services.User.Dtos.Responses;
 using server.Domain.Exceptions.User;
 
@@ -17,25 +19,25 @@ public class UserService(IUnitOfWork unitOfWork) : IUserService
         return users.Adapt<List<UserViewModel>>();
     }
 
-    public async Task<UserDto> GetUserAsync(Guid id)
+    public async Task<UserDto> GetUserAsync(GetUserByIdRequest request)
     {
-        var user = await _unitOfWork.UserRepository.GetAsync(id);
+        var user = await _unitOfWork.UserRepository.GetAsync(request.Id);
 
         if (user == null)
         {
-            throw new UserNotFoundException(id);
+            throw new UserNotFoundException(request.Id);
         }
 
         return user.Adapt<UserDto>();
     }
 
-    public async Task<UserDto> GetUserAsync(string Nickname)
+    public async Task<UserDto> GetUserAsync(GetUserByNicknameRequest request)
     {
-        var user = await _unitOfWork.UserRepository.GetAsync(Nickname);
+        var user = await _unitOfWork.UserRepository.GetAsync(request.Nickname);
 
         if (user == null)
         {
-            throw new UserNotFoundException(Nickname);
+            throw new UserNotFoundException(request.Nickname);
         }
 
         return user.Adapt<UserDto>();

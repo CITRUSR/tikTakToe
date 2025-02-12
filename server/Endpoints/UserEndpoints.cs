@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using server.Application.Contracts.Services;
+using server.Application.Services.User.Dtos.Requests.GetUserById;
+using server.Application.Services.User.Dtos.Requests.GetUserByNickname;
 using server.Application.Services.User.Dtos.Responses;
 
 namespace server.Endpoints;
@@ -28,9 +30,12 @@ public static class UserEndpoints
         builder
             .MapGet(
                 "/api/user/byid",
-                async ([FromServices] IUserService userService, [FromQuery] Guid id) =>
+                async (
+                    [FromServices] IUserService userService,
+                    [AsParameters] GetUserByIdRequest request
+                ) =>
                 {
-                    var user = await userService.GetUserAsync(id);
+                    var user = await userService.GetUserAsync(request);
 
                     return Results.Ok(user);
                 }
@@ -43,9 +48,12 @@ public static class UserEndpoints
         builder
             .MapGet(
                 "/api/user/bynickname",
-                async ([FromServices] IUserService userService, [FromQuery] string nickName) =>
+                async (
+                    [FromServices] IUserService userService,
+                    [AsParameters] GetUserByNicknameRequest request
+                ) =>
                 {
-                    var user = await userService.GetUserAsync(nickName);
+                    var user = await userService.GetUserAsync(request);
 
                     return Results.Ok(user);
                 }

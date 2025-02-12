@@ -1,3 +1,5 @@
+using server.Domain.Exceptions;
+
 namespace server.Middlewares;
 
 public class GlobalExceptionHandler(RequestDelegate next)
@@ -22,6 +24,10 @@ public class GlobalExceptionHandler(RequestDelegate next)
 
         switch (exception)
         {
+            case NotFoundException nFEx:
+                context.Response.StatusCode = StatusCodes.Status400BadRequest;
+                await context.Response.WriteAsJsonAsync(nFEx.Message);
+                break;
             default:
                 await context.Response.WriteAsJsonAsync("Server error");
                 break;

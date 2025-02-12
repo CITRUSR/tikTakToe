@@ -4,16 +4,26 @@ namespace server.Infrastructure.Sql.Queries;
 
 public static class UserQueries
 {
-    public static readonly string GetAll =
+    private static readonly string UserSelectClause =
         @$"
         SELECT {UserTable.Id}, {UserTable.Nickname}, {UserTable.Password}
         FROM {UserTable.TableName}
     ";
 
+    public static readonly string GetAll =
+        @$"
+        {UserSelectClause}
+    ";
+
     public static readonly string GetById =
         @$"
-        SELECT {UserTable.Id}, {UserTable.Nickname}, {UserTable.Password}
-        FROM {UserTable.TableName}
+        {UserSelectClause}
         WHERE {UserTable.Id} = @UserId
+    ";
+
+    public static readonly string GetByNickname =
+        @$"
+        {UserSelectClause}
+        WHERE {UserTable.Nickname} = @Nickname 
     ";
 }

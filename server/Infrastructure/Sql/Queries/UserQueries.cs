@@ -9,4 +9,11 @@ public static class UserQueries
         SELECT {UserTable.Id}, {UserTable.Nickname}, {UserTable.Password}
         FROM {UserTable.TableName}
     ";
+
+    public static readonly string GetById =
+        @$"
+        SELECT {UserTable.Id}, {UserTable.Nickname}, {UserTable.Password}
+        FROM {UserTable.TableName}
+        WHERE {UserTable.Id} = @UserId
+    ";
 }

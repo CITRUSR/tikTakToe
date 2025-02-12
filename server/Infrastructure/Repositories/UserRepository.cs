@@ -28,28 +28,17 @@ public class UserRepository(IConnectionFactory connectionFactory) : IUserReposit
 
     public async Task<User?> GetAsync(Guid id)
     {
-        using var connection = _connectionFactory.CreateConnection();
-
-        await connection.OpenAsync();
-
         var parameters = new DynamicParameters();
 
         parameters.Add("@UserId", id);
 
-        var user = await connection.QuerySingleOrDefaultAsync<User>(
-            UserQueries.GetById,
-            parameters
-        );
+        var user = await GetUserAsync(UserQueries.GetById, parameters);
 
         return user;
     }
 
     public async Task<User?> GetAsync(string nickname)
     {
-        using var connection = _connectionFactory.CreateConnection();
-
-        await connection.OpenAsync();
-
         var parameters = new DynamicParameters();
 
         parameters.Add("@Nickname", nickname);
@@ -67,5 +56,14 @@ public class UserRepository(IConnectionFactory connectionFactory) : IUserReposit
     public Task UpdateAsync(User user)
     {
         throw new NotImplementedException();
+    }
+
+    private async Task<User?> GetUserAsync(string query, DynamicParameters parameters)
+    {
+        using var connection = _connectionFactory.CreateConnection();
+
+        var user = await connection.QuerySingleOrDefaultAsync<User>(query, parameters);
+
+        return user;
     }
 }

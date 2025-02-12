@@ -28,4 +28,16 @@ public class UserService(IUnitOfWork unitOfWork) : IUserService
 
         return user.Adapt<UserDto>();
     }
+
+    public async Task<UserDto> GetUserAsync(string Nickname)
+    {
+        var user = await _unitOfWork.UserRepository.GetAsync(Nickname);
+
+        if (user == null)
+        {
+            throw new UserNotFoundException(Nickname);
+        }
+
+        return user.Adapt<UserDto>();
+    }
 }

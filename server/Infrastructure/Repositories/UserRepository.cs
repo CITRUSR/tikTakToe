@@ -44,9 +44,19 @@ public class UserRepository(IConnectionFactory connectionFactory) : IUserReposit
         return user;
     }
 
-    public Task<User> GetAsync(string nickname)
+    public async Task<User?> GetAsync(string nickname)
     {
-        throw new NotImplementedException();
+        using var connection = _connectionFactory.CreateConnection();
+
+        await connection.OpenAsync();
+
+        var parameters = new DynamicParameters();
+
+        parameters.Add("@Nickname", nickname);
+
+        var user = await GetUserAsync(UserQueries.GetByNickname, parameters);
+
+        return user;
     }
 
     public Task InsertAsync(User user)

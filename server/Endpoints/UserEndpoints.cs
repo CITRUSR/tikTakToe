@@ -40,6 +40,21 @@ public static class UserEndpoints
             .WithSummary("Get user by id")
             .WithDescription("Get user by id");
 
+        builder
+            .MapGet(
+                "/api/user/bynickname",
+                async ([FromServices] IUserService userService, [FromQuery] string nickName) =>
+                {
+                    var user = await userService.GetUserAsync(nickName);
+
+                    return Results.Ok(user);
+                }
+            )
+            .Produces<UserDto>(StatusCodes.Status200OK)
+            .WithTags(USER_TAG)
+            .WithSummary("Get user by nickname")
+            .WithDescription("Get user by nickname");
+
         return builder;
     }
 }

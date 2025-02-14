@@ -1,6 +1,7 @@
 using server.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.AddFluentValidationEndpointFilter();
 
 builder.Services.ConfigureServices(builder.Configuration);
 

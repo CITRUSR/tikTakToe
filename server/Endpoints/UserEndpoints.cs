@@ -8,7 +8,7 @@ namespace server.Endpoints;
 
 public static class UserEndpoints
 {
-    public static IEndpointRouteBuilder Map(this IEndpointRouteBuilder builder)
+    public static IEndpointRouteBuilder Map(this RouteGroupBuilder builder)
     {
         const string USER_TAG = "User";
 

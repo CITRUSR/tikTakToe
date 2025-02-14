@@ -36,6 +36,8 @@ public static class StartupExtension
 
     private static void MapEndpoints(IEndpointRouteBuilder builder)
     {
-        UserEndpoints.Map(builder);
+        var root = builder.MapGroup("/").AddFluentValidationFilter();
+
+        UserEndpoints.Map(root);
     }
 }

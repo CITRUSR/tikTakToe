@@ -1,7 +1,10 @@
 using System.Reflection;
 using DbUp;
+using Microsoft.Extensions.Options;
 using server.Application.Contracts.Repositories;
+using server.Application.Options;
 using server.Infrastructure.Factories;
+using server.Infrastructure.Options;
 using server.Infrastructure.Repositories;
 
 namespace server.Infrastructure;
@@ -14,7 +17,7 @@ public static class DependencyInjection
     )
     {
         ConfigureDb(configuration);
-        ConfigureServices(services);
+        ConfigureServices(services, configuration);
 
         return services;
     }
@@ -48,10 +51,13 @@ public static class DependencyInjection
         Console.ResetColor();
     }
 
-    private static void ConfigureServices(IServiceCollection services)
+    private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<IConnectionFactory, ConnectionFactory>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserRepository, UserRepository>();
+
+        services.Configure<AuthOptionsConfig>(configuration.GetSection("Jwt"));
+        services.AddSingleton<IAuthOptions, AuthOptions>();
     }
 }

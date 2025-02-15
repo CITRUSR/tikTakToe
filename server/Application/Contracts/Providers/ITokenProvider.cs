@@ -5,5 +5,5 @@ namespace server.Application.Contracts.Providers;
 public interface ITokenProvider
 {
     string GenerateAccessToken(User user);
-    string GenerateRefreshToken();
+    RefreshToken GenerateRefreshToken(Guid userId);
 }

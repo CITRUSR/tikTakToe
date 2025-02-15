@@ -36,7 +36,7 @@ public class TokenProvider(IAuthOptions options) : ITokenProvider
         return handler.WriteToken(token);
     }
 
-    public string GenerateRefreshToken()
+    public RefreshToken GenerateRefreshToken(Guid userId)
     {
         byte[] token = new byte[16];
 
@@ -44,6 +44,13 @@ public class TokenProvider(IAuthOptions options) : ITokenProvider
 
         rng.GetBytes(token);
 
-        return Convert.ToBase64String(token);
+        string base64Token = Convert.ToBase64String(token);
+
+        return new RefreshToken
+        {
+            UserId = userId,
+            Token = base64Token,
+            ExpiresAt = DateTime.Now.AddDays(_authOptions.LifeTimeRefreshInDays),
+        };
     }
 }

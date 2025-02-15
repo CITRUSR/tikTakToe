@@ -26,3 +26,10 @@ CREATE TABLE user_stats(
     games_count INTEGER NOT NULL DEFAULT 0 CHECK (games_count >= 0),
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
+
+CREATE TABLE refresh_tokens(
+    user_id UUID PRIMARY KEY,
+    token VARCHAR(128) NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id) 
+);

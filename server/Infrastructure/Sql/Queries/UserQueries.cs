@@ -26,4 +26,10 @@ public static class UserQueries
         {UserSelectClause}
         WHERE {UserTable.Nickname} = @Nickname 
     ";
+
+    public static readonly string Insert =
+        @$"
+        INSERT INTO {UserTable.TableName} ({UserTable.Id}, {UserTable.Nickname}, {UserTable.Password})
+        VALUES (@Id, @Nickname, @Password)
+    ";
 }

@@ -8,13 +8,21 @@ namespace server.Infrastructure.Repositories;
 public class UnitOfWork : IUnitOfWork
 {
     public IUserRepository UserRepository { get; }
+
+    public IRefreshTokenRepository RefreshTokenRepository { get; }
+
     private readonly DbConnection _connection;
     private DbTransaction _transaction;
     private bool _isDisposed;
 
-    public UnitOfWork(IConnectionFactory connectionFactory, IUserRepository userRepository)
+    public UnitOfWork(
+        IConnectionFactory connectionFactory,
+        IUserRepository userRepository,
+        IRefreshTokenRepository refreshTokenRepository
+    )
     {
         UserRepository = userRepository;
+        RefreshTokenRepository = refreshTokenRepository;
 
         _connection = connectionFactory.CreateConnection();
 

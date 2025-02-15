@@ -56,6 +56,7 @@ public static class DependencyInjection
         services.AddSingleton<IConnectionFactory, ConnectionFactory>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
         services.Configure<AuthOptionsConfig>(configuration.GetSection("Jwt"));
         services.AddSingleton<IAuthOptions, AuthOptions>();

@@ -1,3 +1,4 @@
+using server.Application.Common.Exceptions.Auth;
 using server.Domain.Exceptions;
 
 namespace server.Middlewares;
@@ -27,6 +28,10 @@ public class GlobalExceptionHandler(RequestDelegate next)
             case NotFoundException nFEx:
                 context.Response.StatusCode = StatusCodes.Status400BadRequest;
                 await context.Response.WriteAsJsonAsync(nFEx.Message);
+                break;
+            case IdentityException iEx:
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                await context.Response.WriteAsJsonAsync(iEx.Message);
                 break;
             default:
                 await context.Response.WriteAsJsonAsync("Server error");

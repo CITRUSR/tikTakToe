@@ -44,6 +44,7 @@ public static class StartupExtension
         var root = builder.MapGroup("/").AddFluentValidationFilter();
 
         UserEndpoints.Map(root);
+        AuthEndpoints.Map(root);
     }
 
     private static void ConfigureJwt(IServiceCollection services)

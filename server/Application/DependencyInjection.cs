@@ -5,6 +5,7 @@ using server.Application.Common.Factories;
 using server.Application.Contracts.Providers;
 using server.Application.Contracts.Services;
 using server.Application.Providers;
+using server.Application.Services.Auth;
 using server.Application.Services.User;
 
 namespace server.Application;
@@ -24,6 +25,8 @@ public static class DependencyInjection
         services.AddScoped<IUserService, UserService>();
 
         services.AddSingleton<ITokenProvider, TokenProvider>();
+
+        services.AddScoped<IAuthService, AuthService>();
     }
 
     private static void ConfigureFluentValidation(IServiceCollection services)

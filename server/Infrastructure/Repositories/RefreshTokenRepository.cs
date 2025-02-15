@@ -12,6 +12,20 @@ public class RefreshTokenRepository(IConnectionFactory connectionFactory) : IRef
 
     public async Task<RefreshToken> InsertAsync(RefreshToken token)
     {
+        var insertedToken = await SetTokenAsync(token, RefreshTokenQueries.Insert);
+
+        return insertedToken;
+    }
+
+    public async Task<RefreshToken?> UpdateAsync(RefreshToken token)
+    {
+        var updatedToken = await SetTokenAsync(token, RefreshTokenQueries.Update);
+
+        return updatedToken;
+    }
+
+    private async Task<RefreshToken?> SetTokenAsync(RefreshToken token, string query)
+    {
         using var connection = _connectionFactory.CreateConnection();
 
         var parameters = new DynamicParameters();
@@ -19,11 +33,11 @@ public class RefreshTokenRepository(IConnectionFactory connectionFactory) : IRef
         parameters.Add("@Token", token.Token);
         parameters.Add("@ExpiresAt", token.ExpiresAt);
 
-        var insertedToken = await connection.QuerySingleOrDefaultAsync<RefreshToken>(
-            RefreshTokenQueries.Insert,
+        var settedToken = await connection.QuerySingleOrDefaultAsync<RefreshToken>(
+            query,
             parameters
         );
 
-        return insertedToken;
+        return settedToken;
     }
 }

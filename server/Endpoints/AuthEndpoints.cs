@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using server.Application.Contracts.Services;
+using server.Application.Services.Auth.Dtos.Requests.LoginUser;
 using server.Application.Services.Auth.Dtos.Responses;
 
 namespace server.Endpoints;
@@ -28,6 +29,25 @@ public static class AuthEndpoints
             .WithTags(AUTH_TAG)
             .WithSummary("Register a new user")
             .WithDescription("Register a new user");
+
+        builder
+            .MapPost(
+                "/api/auth/login",
+                async (
+                    [FromServices] IAuthService authService,
+                    [FromBody] LoginUserRequest request
+                ) =>
+                {
+                    var authResponse = await authService.LoginAsync(request);
+
+                    return Results.Ok(authResponse);
+                }
+            )
+            .Produces<AuthResponse>(StatusCodes.Status200OK)
+            .Produces<List<string>>(StatusCodes.Status400BadRequest)
+            .WithTags(AUTH_TAG)
+            .WithSummary("Login user")
+            .WithDescription("Login user");
 
         return builder;
     }

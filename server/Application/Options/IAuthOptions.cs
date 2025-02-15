@@ -8,5 +8,6 @@ public interface IAuthOptions
     string Issuer { get; }
     string Key { get; }
     int LifeTimeInSeconds { get; }
+    int LifeTimeRefreshInDays { get; }
     SymmetricSecurityKey GetSymmetricSecurityKey();
 }

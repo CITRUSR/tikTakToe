@@ -10,6 +10,7 @@ public class AuthOptions : IAuthOptions
     public string Audience { get; }
     public string Issuer { get; }
     public int LifeTimeInSeconds { get; }
+    public int LifeTimeRefreshInDays { get; }
     public string Key { get; }
 
     public AuthOptions(IOptions<AuthOptionsConfig> config)
@@ -19,6 +20,7 @@ public class AuthOptions : IAuthOptions
         Issuer = _config.Issuer ?? throw new ArgumentException("Issuer is not set");
         Key = _config.Key ?? throw new ArgumentException("Key is not set");
         LifeTimeInSeconds = _config.LifeTimeInSeconds;
+        LifeTimeRefreshInDays = _config.LifeTimeRefreshInDays;
     }
 
     public SymmetricSecurityKey GetSymmetricSecurityKey()

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using server.Application.Contracts.Services;
 using server.Application.Services.Auth.Dtos.Requests.LoginUser;
+using server.Application.Services.Auth.Dtos.Requests.RefreshUserToken;
 using server.Application.Services.Auth.Dtos.Responses;
 
 namespace server.Endpoints;
@@ -48,6 +49,25 @@ public static class AuthEndpoints
             .WithTags(AUTH_TAG)
             .WithSummary("Login user")
             .WithDescription("Login user");
+
+        builder
+            .MapPost(
+                "/api/auth/refresh",
+                async (
+                    [FromServices] IAuthService authService,
+                    [FromBody] RefreshUserTokenRequest request
+                ) =>
+                {
+                    var authResponse = await authService.RefreshAsync(request);
+
+                    return Results.Ok(authResponse);
+                }
+            )
+            .Produces<AuthResponse>(StatusCodes.Status200OK)
+            .Produces<List<string>>(StatusCodes.Status400BadRequest)
+            .WithTags(AUTH_TAG)
+            .WithSummary("Refresh tokens")
+            .WithDescription("Refresh access and refresh token");
 
         return builder;
     }

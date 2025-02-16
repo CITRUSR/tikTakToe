@@ -10,6 +10,21 @@ public class RefreshTokenRepository(IConnectionFactory connectionFactory) : IRef
 {
     private readonly IConnectionFactory _connectionFactory = connectionFactory;
 
+    public async Task<RefreshToken?> GetAsync(Guid userId)
+    {
+        using var connection = _connectionFactory.CreateConnection();
+
+        var parameters = new DynamicParameters();
+        parameters.Add("@UserId", userId);
+
+        var refreshToken = await connection.QuerySingleOrDefaultAsync<RefreshToken>(
+            RefreshTokenQueries.GetByUserId,
+            parameters
+        );
+
+        return refreshToken;
+    }
+
     public async Task<RefreshToken> InsertAsync(RefreshToken token)
     {
         var insertedToken = await SetTokenAsync(token, RefreshTokenQueries.Insert);

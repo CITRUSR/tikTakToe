@@ -22,4 +22,10 @@ public static class RefreshTokenQueries
         WHERE {RefreshTokenTable.UserId} = @UserId
         RETURNING {AllColumns}
     ";
+
+    public static readonly string GetByUserId =
+        @$"
+        SELECT {AllColumns} FROM {RefreshTokenTable.TableName}
+        WHERE {RefreshTokenTable.UserId} = @UserId
+    ";
 }

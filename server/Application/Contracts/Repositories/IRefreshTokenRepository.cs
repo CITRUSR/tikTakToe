@@ -6,4 +6,5 @@ public interface IRefreshTokenRepository
 {
     Task<RefreshToken> InsertAsync(RefreshToken token);
     Task<RefreshToken?> UpdateAsync(RefreshToken token);
+    Task<RefreshToken?> GetAsync(Guid userId);
 }

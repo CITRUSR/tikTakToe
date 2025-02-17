@@ -1,0 +1,14 @@
+CREATE OR REPLACE FUNCTION add_user_stats()
+RETURNS TRIGGER
+LANGUAGE PLPGSQL
+AS
+$$
+BEGIN 
+    INSERT INTO user_stats (user_id)
+    VALUES (NEW.id);
+    RETURN NEW;
+END;
+$$
+
+CREATE TRIGGER add_stats AFTER INSERT ON users
+EXECUTE FUNCTION add_user_stats();

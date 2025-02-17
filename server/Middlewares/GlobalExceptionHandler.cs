@@ -33,6 +33,10 @@ public class GlobalExceptionHandler(RequestDelegate next)
                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 await context.Response.WriteAsJsonAsync(iEx.Message);
                 break;
+            case AlreadyExistsException aEx:
+                context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
+                await context.Response.WriteAsJsonAsync(aEx.Message);
+                break;
             default:
                 await context.Response.WriteAsJsonAsync("Server error");
                 break;

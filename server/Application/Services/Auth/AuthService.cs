@@ -11,18 +11,21 @@ using server.Application.Services.Auth.Dtos.Requests.RefreshUserToken;
 using server.Application.Services.Auth.Dtos.Responses;
 using server.Domain.Exceptions.RefreshToken;
 using server.Domain.Exceptions.User;
+using server.Infrastructure.Utils.Constraints.Unique;
 
 namespace server.Application.Services.Auth;
 
 public class AuthService(
     ITokenProvider tokenProvider,
     IUnitOfWork unitOfWork,
-    IAuthOptions authOptions
+    IAuthOptions authOptions,
+    IUniqueConstraintChecker uniqueConstraintChecker
 ) : IAuthService
 {
     private readonly ITokenProvider _tokenProvider = tokenProvider;
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
     private readonly IAuthOptions _authOptions = authOptions;
+    private readonly IUniqueConstraintChecker _uniqueConstraintChecker = uniqueConstraintChecker;
 
     public async Task<AuthResponse> LoginAsync(LoginUserRequest request)
     {
@@ -132,9 +135,15 @@ public class AuthService(
 
             _unitOfWork.CommitTransaction();
         }
-        catch
+        catch (Exception ex)
         {
             _unitOfWork.RollbackTransaction();
+
+            _uniqueConstraintChecker.Check(ex, typeof(Domain.Entities.User));
+
+            if (_uniqueConstraintChecker.Exception != null)
+                throw _uniqueConstraintChecker.Exception;
+
             throw;
         }
 

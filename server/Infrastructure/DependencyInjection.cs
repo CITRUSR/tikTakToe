@@ -1,11 +1,11 @@
 using System.Reflection;
 using DbUp;
-using Microsoft.Extensions.Options;
 using server.Application.Contracts.Repositories;
 using server.Application.Options;
 using server.Infrastructure.Factories;
 using server.Infrastructure.Options;
 using server.Infrastructure.Repositories;
+using server.Infrastructure.Utils.Constraints.Unique;
 
 namespace server.Infrastructure;
 
@@ -54,6 +54,9 @@ public static class DependencyInjection
     private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<IConnectionFactory, ConnectionFactory>();
+
+        services.AddSingleton<IUniqueConstraintChecker, PostgresUniqueConstraintChecker>();
+
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();

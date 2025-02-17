@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using server.Application.Contracts.Services;
 using server.Application.Services.User.Dtos.Requests.GetUserById;
 using server.Application.Services.User.Dtos.Requests.GetUserByNickname;
+using server.Application.Services.User.Dtos.Requests.UpdateUser;
 using server.Application.Services.User.Dtos.Responses;
 
 namespace server.Endpoints;
@@ -62,6 +63,25 @@ public static class UserEndpoints
             .WithTags(USER_TAG)
             .WithSummary("Get user by nickname")
             .WithDescription("Get user by nickname");
+
+        builder
+            .MapPut(
+                "/api/user",
+                async (
+                    [FromServices] IUserService userService,
+                    [FromBody] UpdateUserRequest request
+                ) =>
+                {
+                    var user = await userService.UpdateUserAsync(request);
+
+                    return Results.Ok(user);
+                }
+            )
+            .Produces<UserDto>(StatusCodes.Status200OK)
+            .Produces<string>(StatusCodes.Status404NotFound)
+            .WithTags(USER_TAG)
+            .WithSummary("Update user")
+            .WithDescription("Update user");
 
         return builder;
     }

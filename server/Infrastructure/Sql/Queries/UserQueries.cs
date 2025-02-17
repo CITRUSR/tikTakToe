@@ -32,4 +32,13 @@ public static class UserQueries
         INSERT INTO {UserTable.TableName} ({UserTable.Id}, {UserTable.Nickname}, {UserTable.Password})
         VALUES (@Id, @Nickname, @Password)
     ";
+
+    public static readonly string Update =
+        @$"
+        UPDATE {UserTable.TableName}
+        SET {UserTable.Nickname} = @Nickname,
+        {UserTable.Password} = @Password
+        WHERE {UserTable.Id} = @Id
+        RETURNING {UserTable.Id}, {UserTable.Nickname}, {UserTable.Password}
+    ";
 }

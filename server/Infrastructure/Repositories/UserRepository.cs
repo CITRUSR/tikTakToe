@@ -60,9 +60,21 @@ public class UserRepository(IConnectionFactory connectionFactory) : IUserReposit
         await connection.ExecuteAsync(UserQueries.Insert, parameters);
     }
 
-    public Task UpdateAsync(User user)
+    public async Task<User?> UpdateAsync(User user)
     {
-        throw new NotImplementedException();
+        var parameters = new DynamicParameters();
+        parameters.Add("@Nickname", user.Nickname);
+        parameters.Add("@Password", user.Password);
+        parameters.Add("@Id", user.Id);
+
+        using var connection = _connectionFactory.CreateConnection();
+
+        var updatedUser = await connection.QuerySingleOrDefaultAsync<User>(
+            UserQueries.Update,
+            parameters
+        );
+
+        return updatedUser;
     }
 
     private async Task<User?> GetUserAsync(string query, DynamicParameters parameters)

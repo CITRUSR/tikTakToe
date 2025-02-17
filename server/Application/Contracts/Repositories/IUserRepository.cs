@@ -8,6 +8,6 @@ public interface IUserRepository
     Task<User?> GetAsync(Guid id);
     Task<User?> GetAsync(string nickname);
     Task InsertAsync(User user);
-    Task UpdateAsync(User user);
+    Task<User?> UpdateAsync(User user);
     Task DeleteAsync(User user);
 }

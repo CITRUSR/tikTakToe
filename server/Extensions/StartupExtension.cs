@@ -4,7 +4,6 @@ using server.Application;
 using server.Application.Options;
 using server.Endpoints;
 using server.Infrastructure;
-using server.Infrastructure.Options;
 using server.Middlewares;
 
 namespace server.Extensions;
@@ -45,6 +44,7 @@ public static class StartupExtension
 
         UserEndpoints.Map(root);
         AuthEndpoints.Map(root);
+        UserStatEndpoints.Map(root);
     }
 
     private static void ConfigureJwt(IServiceCollection services)

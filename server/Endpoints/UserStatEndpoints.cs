@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using server.Application.Contracts.Services;
-using server.Application.Services.UserStat.Dtos.Requests;
+using server.Application.Services.UserStat.Dtos.Requests.GetUserStat;
 using server.Application.Services.UserStat.Dtos.Requests.UpdateUserStat;
 using server.Application.Services.UserStat.Dtos.Responses;
 

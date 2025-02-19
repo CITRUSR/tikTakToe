@@ -1,7 +1,7 @@
 using Mapster;
 using server.Application.Contracts.Repositories;
 using server.Application.Contracts.Services;
-using server.Application.Services.UserStat.Dtos.Requests;
+using server.Application.Services.UserStat.Dtos.Requests.GetUserStat;
 using server.Application.Services.UserStat.Dtos.Requests.UpdateUserStat;
 using server.Application.Services.UserStat.Dtos.Responses;
 using server.Domain.Exceptions.UserStat;

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using server.Application.Contracts.Services;
-using server.Application.Services.UserStat.Dtos.Requests.GetUserStat;
+using server.Application.Services.UserStat.Dtos.Requests;
 using server.Application.Services.UserStat.Dtos.Requests.UpdateUserStat;
 using server.Application.Services.UserStat.Dtos.Responses;
 
@@ -30,6 +30,25 @@ public static class UserStatEndpoints
             .WithTags(USER_STAT_TAG)
             .WithSummary("Get user statistics")
             .WithDescription("Get user statistics");
+
+        builder
+            .MapPut(
+                "/api/userStat",
+                async (
+                    [FromBody] UpdateUserStatRequest request,
+                    [FromServices] IUserStatService userStatService
+                ) =>
+                {
+                    var userStat = await userStatService.UpdateAsync(request);
+
+                    return Results.Ok(userStat);
+                }
+            )
+            .Produces<UserStatDto>(StatusCodes.Status200OK)
+            .Produces<string>(StatusCodes.Status404NotFound)
+            .WithTags(USER_STAT_TAG)
+            .WithSummary("Update user statistics")
+            .WithDescription("Update user statistics");
 
         return builder;
     }

@@ -29,4 +29,28 @@ public class UserStatRepository(IConnectionFactory connectionFactory) : IUserSta
 
         return stat.FirstOrDefault();
     }
+
+    public async Task<UserStat?> UpdateAsync(UserStat stat)
+    {
+        using var connection = _connectionFactory.CreateConnection();
+
+        var parameters = new DynamicParameters();
+
+        parameters.Add("@UserId", stat.User.Id);
+        parameters.Add("@Wins", stat.Wins);
+        parameters.Add("@Losses", stat.Losses);
+        parameters.Add("@GamesCount", stat.GamesCount);
+
+        var userStat = await connection.QueryAsync<UserStat, User, UserStat>(
+            UserStatQueries.Update,
+            (stat, user) =>
+            {
+                stat.User = user;
+                return stat;
+            },
+            parameters
+        );
+
+        return userStat.FirstOrDefault();
+    }
 }

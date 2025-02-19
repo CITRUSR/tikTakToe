@@ -18,4 +18,24 @@ public static class UserStatQueries
         ON {UserStatTable.TableName}.{UserStatTable.UserId} = {UserTable.TableName}.{UserTable.Id}
         WHERE {UserStatTable.TableName}.{UserStatTable.UserId} = @UserId
     ";
+
+    public static readonly string Update =
+        @$"
+        WITH user AS(
+            {UserQueries.GetAll}
+        )
+        UPDATE {UserStatTable.TableName}
+        SET {UserStatTable.Wins} = @Wins,
+            {UserStatTable.Losses} = @Losses,
+            {UserStatTable.GamesCount} = @GamesCount
+        WHERE {UserStatTable.UserId} = @UserId
+        RETURNING
+        {UserStatTable.UserId},
+        {UserStatTable.Wins},
+        {UserStatTable.Losses},
+        {UserStatTable.GamesCount},
+        {UserTable.Id},
+        {UserTable.Nickname},
+        {UserTable.Password}
+    ";
 }

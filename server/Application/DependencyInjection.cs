@@ -6,6 +6,7 @@ using server.Application.Contracts.Providers;
 using server.Application.Contracts.Services;
 using server.Application.Providers;
 using server.Application.Services.Auth;
+using server.Application.Services.Room;
 using server.Application.Services.User;
 using server.Application.Services.UserStat;
 
@@ -30,6 +31,8 @@ public static class DependencyInjection
         services.AddScoped<IAuthService, AuthService>();
 
         services.AddScoped<IUserStatService, UserStatService>();
+
+        services.AddScoped<IRoomService, RoomService>();
     }
 
     private static void ConfigureFluentValidation(IServiceCollection services)

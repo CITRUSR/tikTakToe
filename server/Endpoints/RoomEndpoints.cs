@@ -13,6 +13,21 @@ public static class RoomEndpoints
 
         builder
             .MapGet(
+                "api/rooms",
+                async ([FromServices] IRoomService roomService) =>
+                {
+                    var rooms = await roomService.GetAllAsync();
+
+                    return Results.Ok(rooms);
+                }
+            )
+            .Produces<RoomDto>(StatusCodes.Status200OK)
+            .WithTags(ROOM_TAG)
+            .WithSummary("Get all rooms")
+            .WithDescription("Get all rooms");
+
+        builder
+            .MapGet(
                 "api/room",
                 async (
                     [AsParameters] GetRoomRequest request,

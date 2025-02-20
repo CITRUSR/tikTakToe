@@ -11,6 +11,11 @@ public class RoomService(IUnitOfWork unitOfWork) : IRoomService
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
+    public async Task<List<Domain.Entities.Room>> GetAllAsync()
+    {
+        return await _unitOfWork.RoomRepository.GetAllAsync();
+    }
+
     public async Task<RoomDto> GetRoomAsync(GetRoomRequest request)
     {
         var room = await _unitOfWork.RoomRepository.GetAsync(request.Id);

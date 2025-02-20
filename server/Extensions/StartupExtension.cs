@@ -45,6 +45,7 @@ public static class StartupExtension
         UserEndpoints.Map(root);
         AuthEndpoints.Map(root);
         UserStatEndpoints.Map(root);
+        RoomEndpoints.Map(root);
     }
 
     private static void ConfigureJwt(IServiceCollection services)

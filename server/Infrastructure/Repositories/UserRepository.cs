@@ -1,14 +1,14 @@
+using System.Data;
 using Dapper;
 using server.Application.Contracts.Repositories;
 using server.Domain.Entities;
-using server.Infrastructure.Factories;
 using server.Infrastructure.Sql.Queries;
 
 namespace server.Infrastructure.Repositories;
 
-public class UserRepository(IConnectionFactory connectionFactory) : IUserRepository
+public class UserRepository(IDbConnection connection) : IUserRepository
 {
-    private readonly IConnectionFactory _connectionFactory = connectionFactory;
+    private readonly IDbConnection _connection = connection;
 
     public Task DeleteAsync(User user)
     {
@@ -17,11 +17,7 @@ public class UserRepository(IConnectionFactory connectionFactory) : IUserReposit
 
     public async Task<List<User>> GetAllAsync()
     {
-        using var connection = _connectionFactory.CreateConnection();
-
-        await connection.OpenAsync();
-
-        var users = await connection.QueryAsync<User>(UserQueries.GetAll);
+        var users = await _connection.QueryAsync<User>(UserQueries.GetAll);
 
         return [.. users];
     }
@@ -55,9 +51,7 @@ public class UserRepository(IConnectionFactory connectionFactory) : IUserReposit
         parameters.Add("@Password", user.Password);
         parameters.Add("@Id", user.Id);
 
-        using var connection = _connectionFactory.CreateConnection();
-
-        await connection.ExecuteAsync(UserQueries.Insert, parameters);
+        await _connection.ExecuteAsync(UserQueries.Insert, parameters);
     }
 
     public async Task<User?> UpdateAsync(User user)
@@ -67,9 +61,7 @@ public class UserRepository(IConnectionFactory connectionFactory) : IUserReposit
         parameters.Add("@Password", user.Password);
         parameters.Add("@Id", user.Id);
 
-        using var connection = _connectionFactory.CreateConnection();
-
-        var updatedUser = await connection.QuerySingleOrDefaultAsync<User>(
+        var updatedUser = await _connection.QuerySingleOrDefaultAsync<User>(
             UserQueries.Update,
             parameters
         );
@@ -79,9 +71,7 @@ public class UserRepository(IConnectionFactory connectionFactory) : IUserReposit
 
     private async Task<User?> GetUserAsync(string query, DynamicParameters parameters)
     {
-        using var connection = _connectionFactory.CreateConnection();
-
-        var user = await connection.QuerySingleOrDefaultAsync<User>(query, parameters);
+        var user = await _connection.QuerySingleOrDefaultAsync<User>(query, parameters);
 
         return user;
     }

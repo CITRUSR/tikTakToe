@@ -1,23 +1,21 @@
+using System.Data;
 using Dapper;
 using server.Application.Contracts.Repositories;
 using server.Domain.Entities;
-using server.Infrastructure.Factories;
 using server.Infrastructure.Sql.Queries;
 
 namespace server.Infrastructure.Repositories;
 
-public class UserStatRepository(IConnectionFactory connectionFactory) : IUserStatRepository
+public class UserStatRepository(IDbConnection connection) : IUserStatRepository
 {
-    private readonly IConnectionFactory _connectionFactory = connectionFactory;
+    private readonly IDbConnection _connection = connection;
 
     public async Task<UserStat?> GetAsync(Guid id)
     {
-        using var connection = _connectionFactory.CreateConnection();
-
         var parameters = new DynamicParameters();
         parameters.Add("@UserId", id);
 
-        var stat = await connection.QueryAsync<UserStat, User, UserStat>(
+        var stat = await _connection.QueryAsync<UserStat, User, UserStat>(
             UserStatQueries.Get,
             (stat, user) =>
             {
@@ -32,8 +30,6 @@ public class UserStatRepository(IConnectionFactory connectionFactory) : IUserSta
 
     public async Task<UserStat?> UpdateAsync(UserStat stat)
     {
-        using var connection = _connectionFactory.CreateConnection();
-
         var parameters = new DynamicParameters();
 
         parameters.Add("@UserId", stat.User.Id);
@@ -41,7 +37,7 @@ public class UserStatRepository(IConnectionFactory connectionFactory) : IUserSta
         parameters.Add("@Losses", stat.Losses);
         parameters.Add("@GamesCount", stat.GamesCount);
 
-        var userStat = await connection.QueryAsync<UserStat, User, UserStat>(
+        var userStat = await _connection.QueryAsync<UserStat, User, UserStat>(
             UserStatQueries.Update,
             (stat, user) =>
             {

@@ -1,3 +1,5 @@
+using System.Data;
+using System.Data.Common;
 using System.Reflection;
 using DbUp;
 using server.Application.Contracts.Repositories;
@@ -54,6 +56,14 @@ public static class DependencyInjection
     private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<IConnectionFactory, ConnectionFactory>();
+        services.AddScoped<IDbConnection, DbConnection>(
+            (sp) =>
+            {
+                var factory = sp.GetRequiredService<IConnectionFactory>();
+
+                return factory.CreateConnection();
+            }
+        );
 
         services.AddSingleton<IUniqueConstraintChecker, PostgresUniqueConstraintChecker>();
 

@@ -1,6 +1,5 @@
-using System.Data.Common;
+using System.Data;
 using server.Application.Contracts.Repositories;
-using server.Infrastructure.Factories;
 
 namespace server.Infrastructure.Repositories;
 
@@ -12,13 +11,13 @@ public class UnitOfWork : IUnitOfWork
 
     public IUserStatRepository UserStatRepository { get; }
 
-    private readonly DbConnection _connection;
-    private DbTransaction _transaction;
+    private readonly IDbConnection _connection;
+    private IDbTransaction _transaction;
     private bool _isDisposed;
 
     public UnitOfWork(
-        IConnectionFactory connectionFactory,
         IUserRepository userRepository,
+        IDbConnection connection,
         IRefreshTokenRepository refreshTokenRepository,
         IUserStatRepository userStatRepository
     )
@@ -27,7 +26,7 @@ public class UnitOfWork : IUnitOfWork
         RefreshTokenRepository = refreshTokenRepository;
         UserStatRepository = userStatRepository;
 
-        _connection = connectionFactory.CreateConnection();
+        _connection = connection;
 
         _connection.Open();
     }

@@ -1,23 +1,21 @@
+using System.Data;
 using Dapper;
 using server.Application.Contracts.Repositories;
 using server.Domain.Entities;
-using server.Infrastructure.Factories;
 using server.Infrastructure.Sql.Queries;
 
 namespace server.Infrastructure.Repositories;
 
-public class RefreshTokenRepository(IConnectionFactory connectionFactory) : IRefreshTokenRepository
+public class RefreshTokenRepository(IDbConnection connection) : IRefreshTokenRepository
 {
-    private readonly IConnectionFactory _connectionFactory = connectionFactory;
+    private readonly IDbConnection _connection = connection;
 
     public async Task<RefreshToken?> GetAsync(Guid userId)
     {
-        using var connection = _connectionFactory.CreateConnection();
-
         var parameters = new DynamicParameters();
         parameters.Add("@UserId", userId);
 
-        var refreshToken = await connection.QuerySingleOrDefaultAsync<RefreshToken>(
+        var refreshToken = await _connection.QuerySingleOrDefaultAsync<RefreshToken>(
             RefreshTokenQueries.GetByUserId,
             parameters
         );
@@ -41,14 +39,12 @@ public class RefreshTokenRepository(IConnectionFactory connectionFactory) : IRef
 
     private async Task<RefreshToken?> SetTokenAsync(RefreshToken token, string query)
     {
-        using var connection = _connectionFactory.CreateConnection();
-
         var parameters = new DynamicParameters();
         parameters.Add("@UserId", token.UserId);
         parameters.Add("@Token", token.Token);
         parameters.Add("@ExpiresAt", token.ExpiresAt);
 
-        var settedToken = await connection.QuerySingleOrDefaultAsync<RefreshToken>(
+        var settedToken = await _connection.QuerySingleOrDefaultAsync<RefreshToken>(
             query,
             parameters
         );

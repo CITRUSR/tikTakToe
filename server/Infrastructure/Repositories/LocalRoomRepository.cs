@@ -8,7 +8,7 @@ public class LocalRoomRepository(IRoomManager roomManager) : IRoomRepository
 {
     private readonly IRoomManager _roomManager = roomManager;
 
-    public Task<List<Room>> GetAll()
+    public Task<List<Room>> GetAllAsync()
     {
         return Task.FromResult(_roomManager.GetAll().ToList());
     }

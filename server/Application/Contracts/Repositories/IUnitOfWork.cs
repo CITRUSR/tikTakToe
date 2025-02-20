@@ -5,6 +5,7 @@ public interface IUnitOfWork : IDisposable
     IUserRepository UserRepository { get; }
     IRefreshTokenRepository RefreshTokenRepository { get; }
     IUserStatRepository UserStatRepository { get; }
+    IRoomRepository RoomRepository { get; }
 
     void BeginTransaction();
     void CommitTransaction();

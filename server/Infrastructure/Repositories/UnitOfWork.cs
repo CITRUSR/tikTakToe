@@ -6,11 +6,9 @@ namespace server.Infrastructure.Repositories;
 public class UnitOfWork : IUnitOfWork
 {
     public IUserRepository UserRepository { get; }
-
     public IRefreshTokenRepository RefreshTokenRepository { get; }
-
     public IUserStatRepository UserStatRepository { get; }
-
+    public IRoomRepository RoomRepository { get; }
     private readonly IDbConnection _connection;
     private IDbTransaction _transaction;
     private bool _isDisposed;
@@ -19,12 +17,14 @@ public class UnitOfWork : IUnitOfWork
         IUserRepository userRepository,
         IDbConnection connection,
         IRefreshTokenRepository refreshTokenRepository,
-        IUserStatRepository userStatRepository
+        IUserStatRepository userStatRepository,
+        IRoomRepository roomRepository
     )
     {
         UserRepository = userRepository;
         RefreshTokenRepository = refreshTokenRepository;
         UserStatRepository = userStatRepository;
+        RoomRepository = roomRepository;
 
         _connection = connection;
 

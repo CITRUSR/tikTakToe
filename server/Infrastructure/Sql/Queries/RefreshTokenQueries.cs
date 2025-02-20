@@ -4,8 +4,13 @@ namespace server.Infrastructure.Sql.Queries;
 
 public static class RefreshTokenQueries
 {
-    private static readonly string AllColumns =
+    public static readonly string AllColumns =
         $"{RefreshTokenTable.UserId}, {RefreshTokenTable.Token}, {RefreshTokenTable.ExpiresAt}";
+
+    public static readonly string GetAll =
+        @$"
+        SELECT {AllColumns} FROM {RefreshTokenTable.TableName}
+    ";
 
     public static readonly string Insert =
         @$"

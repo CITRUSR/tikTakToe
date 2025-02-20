@@ -1,5 +1,13 @@
+using System.Data;
+using System.Data.Common;
 using System.Reflection;
 using DbUp;
+using server.Application.Contracts.Repositories;
+using server.Application.Options;
+using server.Infrastructure.Factories;
+using server.Infrastructure.Options;
+using server.Infrastructure.Repositories;
+using server.Infrastructure.Utils.Constraints.Unique;
 
 namespace server.Infrastructure;
 
@@ -11,6 +19,7 @@ public static class DependencyInjection
     )
     {
         ConfigureDb(configuration);
+        ConfigureServices(services, configuration);
 
         return services;
     }
@@ -42,5 +51,28 @@ public static class DependencyInjection
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("Success!");
         Console.ResetColor();
+    }
+
+    private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddSingleton<IConnectionFactory, ConnectionFactory>();
+        services.AddScoped<IDbConnection, DbConnection>(
+            (sp) =>
+            {
+                var factory = sp.GetRequiredService<IConnectionFactory>();
+
+                return factory.CreateConnection();
+            }
+        );
+
+        services.AddSingleton<IUniqueConstraintChecker, PostgresUniqueConstraintChecker>();
+
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+        services.AddScoped<IUserStatRepository, UserStatRepository>();
+
+        services.Configure<AuthOptionsConfig>(configuration.GetSection("Jwt"));
+        services.AddSingleton<IAuthOptions, AuthOptions>();
     }
 }

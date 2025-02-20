@@ -5,7 +5,7 @@
 
 # dotenv files
 .env
-
+DbScheme.drawio.svg
 .vscode
 
 # User-specific files

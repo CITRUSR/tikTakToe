@@ -19,4 +19,11 @@ public class LocalRoomRepository(IRoomStorage roomStorage) : IRoomRepository
 
         return Task.FromResult(room);
     }
+
+    public Task<Room> InsertAsync(Room room)
+    {
+        _roomStorage.Add(room);
+
+        return Task.FromResult(room);
+    }
 }

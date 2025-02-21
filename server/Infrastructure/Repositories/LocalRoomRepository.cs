@@ -1,21 +1,21 @@
 using server.Application.Contracts.Repositories;
 using server.Domain.Entities;
-using server.Infrastructure.Managers;
+using server.Infrastructure.Storages;
 
 namespace server.Infrastructure.Repositories;
 
-public class LocalRoomRepository(IRoomManager roomManager) : IRoomRepository
+public class LocalRoomRepository(IRoomStorage roomStorage) : IRoomRepository
 {
-    private readonly IRoomManager _roomManager = roomManager;
+    private readonly IRoomStorage _roomStorage = roomStorage;
 
     public Task<List<Room>> GetAllAsync()
     {
-        return Task.FromResult(_roomManager.GetAll().ToList());
+        return Task.FromResult(_roomStorage.GetAll().ToList());
     }
 
     public Task<Room?> GetAsync(Guid roomId)
     {
-        var room = _roomManager.Get(room => room.Id == roomId).FirstOrDefault();
+        var room = _roomStorage.Get(room => room.Id == roomId).FirstOrDefault();
 
         return Task.FromResult(room);
     }

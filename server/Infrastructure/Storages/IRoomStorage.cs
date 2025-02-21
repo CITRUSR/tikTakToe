@@ -1,8 +1,8 @@
 using server.Domain.Entities;
 
-namespace server.Infrastructure.Managers;
+namespace server.Infrastructure.Storages;
 
-public interface IRoomManager
+public interface IRoomStorage
 {
     List<Room> GetAll();
     List<Room> Get(Func<Room, bool> predicate);

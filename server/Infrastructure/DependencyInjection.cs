@@ -5,9 +5,9 @@ using DbUp;
 using server.Application.Contracts.Repositories;
 using server.Application.Options;
 using server.Infrastructure.Factories;
-using server.Infrastructure.Managers;
 using server.Infrastructure.Options;
 using server.Infrastructure.Repositories;
+using server.Infrastructure.Storages;
 using server.Infrastructure.Utils.Constraints.Unique;
 
 namespace server.Infrastructure;
@@ -66,7 +66,7 @@ public static class DependencyInjection
             }
         );
 
-        services.AddSingleton<IRoomManager, RoomManager>();
+        services.AddSingleton<IRoomStorage, RoomStorage>();
 
         services.AddSingleton<IUniqueConstraintChecker, PostgresUniqueConstraintChecker>();
 

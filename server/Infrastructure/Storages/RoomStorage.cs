@@ -1,8 +1,8 @@
 using server.Domain.Entities;
 
-namespace server.Infrastructure.Managers;
+namespace server.Infrastructure.Storages;
 
-public class RoomManager : IRoomManager
+public class RoomStorage : IRoomStorage
 {
     private readonly List<Room> _rooms = [];
     private readonly Lock _lock = new();

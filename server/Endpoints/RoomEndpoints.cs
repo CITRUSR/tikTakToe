@@ -1,7 +1,10 @@
+using System.Net.WebSockets;
 using Microsoft.AspNetCore.Mvc;
 using server.Application.Contracts.Services;
+using server.Application.Services.Room.Dtos.Requests.CreateRoom;
 using server.Application.Services.Room.Dtos.Requests.GetRoom;
 using server.Application.Services.Room.Dtos.Responses;
+using server.Domain.Entities;
 
 namespace server.Endpoints;
 
@@ -45,6 +48,26 @@ public static class RoomEndpoints
             .WithTags(ROOM_TAG)
             .WithSummary("Get room")
             .WithDescription("Get room by id");
+
+        builder
+            .MapPost(
+                "api/room",
+                async (
+                    [FromBody] CreateRoomRequest request,
+                    [FromServices] IRoomService roomService
+                ) =>
+                {
+                    var room = await roomService.CreateAsync(request);
+
+                    return Results.Created("", room);
+                }
+            )
+            .Produces<Room>(StatusCodes.Status201Created)
+            .Produces<List<string>>(StatusCodes.Status400BadRequest)
+            .Produces<string>(StatusCodes.Status404NotFound)
+            .WithTags(ROOM_TAG)
+            .WithSummary("Create room")
+            .WithDescription("Create a new room");
 
         return builder;
     }

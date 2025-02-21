@@ -1,3 +1,4 @@
+using server.Application.Services.Room.Dtos.Requests.CreateRoom;
 using server.Application.Services.Room.Dtos.Requests.GetRoom;
 using server.Application.Services.Room.Dtos.Responses;
 using server.Domain.Entities;
@@ -8,4 +9,5 @@ public interface IRoomService
 {
     Task<RoomDto> GetRoomAsync(GetRoomRequest request);
     Task<List<Room>> GetAllAsync();
+    Task<Room> CreateAsync(CreateRoomRequest request);
 }

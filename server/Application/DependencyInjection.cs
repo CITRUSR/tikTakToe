@@ -42,7 +42,9 @@ public static class DependencyInjection
 
         services.AddScoped<IMapService, MapService>();
 
-        services.AddSingleton<IUserMessagesNotifier, UserMessagesNotifier>(); //
+        services.AddSingleton<ISocketHandler, SocketHandler>();
+
+        services.AddSingleton<IUserMessagesNotifier, UserMessagesNotifier>();
     }
 
     private static void ConfigureFluentValidation(IServiceCollection services)

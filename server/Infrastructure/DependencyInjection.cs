@@ -67,6 +67,7 @@ public static class DependencyInjection
         );
 
         services.AddSingleton<IRoomStorage, RoomStorage>();
+        services.AddSingleton<IRoomConnectionStorage, RoomConnectionStorage>();
 
         services.AddSingleton<IUniqueConstraintChecker, PostgresUniqueConstraintChecker>();
 

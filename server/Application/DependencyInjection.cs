@@ -47,6 +47,8 @@ public static class DependencyInjection
         services.AddScoped<IMapService, MapService>();
         services.AddScoped<IGameSessionService, GameSessionService>();
 
+        services.AddScoped<IRoomManager, RoomManager>();
+
         services.AddSingleton<ISocketHandler, SocketHandler>();
 
         services.AddSingleton<IUserMessagesNotifier, UserMessagesNotifier>();

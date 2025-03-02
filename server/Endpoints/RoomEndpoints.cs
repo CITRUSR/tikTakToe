@@ -1,9 +1,9 @@
-using System.Net.WebSockets;
 using Microsoft.AspNetCore.Mvc;
 using server.Application.Contracts.Services;
 using server.Application.Services.Room.Dtos.Requests.CreateRoom;
 using server.Application.Services.Room.Dtos.Requests.GetRoom;
 using server.Application.Services.Room.Dtos.Responses;
+using server.Application.Services.RoomManager.Dtos.Requests.ConnectToRoom;
 using server.Domain.Entities;
 
 namespace server.Endpoints;
@@ -68,6 +68,39 @@ public static class RoomEndpoints
             .WithTags(ROOM_TAG)
             .WithSummary("Create room")
             .WithDescription("Create a new room");
+
+        builder
+            .MapGet(
+                "api/room/connect",
+                async (
+                    HttpContext context,
+                    [FromQuery] Guid roomId,
+                    [FromQuery] Guid userId,
+                    [FromServices] IRoomManager roomManager
+                ) =>
+                {
+                    if (!context.WebSockets.IsWebSocketRequest)
+                    {
+                        return Results.BadRequest();
+                    }
+
+                    var socket = await context.WebSockets.AcceptWebSocketAsync();
+
+                    var request = new ConnectToRoomRequest(roomId, userId, socket);
+
+                    await roomManager.ConnectToRoomAsync(request);
+
+                    return Results.Empty;
+                }
+            )
+            .Produces(StatusCodes.Status204NoContent)
+            .WithTags(ROOM_TAG)
+            .WithSummary("Connect to room")
+            .WithDescription(
+                @"connect user to room, after connect from
+                server will send request with map and active user,
+                active user will be using round other cross"
+            );
 
         return builder;
     }

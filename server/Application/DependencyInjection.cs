@@ -45,6 +45,8 @@ public static class DependencyInjection
         services.AddSingleton<ISocketHandler, SocketHandler>();
 
         services.AddSingleton<IUserMessagesNotifier, UserMessagesNotifier>();
+
+        services.AddSingleton<IGameSessionSocketHelper, GameSessionSocketHelper>();
     }
 
     private static void ConfigureFluentValidation(IServiceCollection services)

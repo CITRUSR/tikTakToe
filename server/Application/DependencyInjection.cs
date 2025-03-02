@@ -41,12 +41,15 @@ public static class DependencyInjection
         services.AddScoped<IRoomService, RoomService>();
 
         services.AddScoped<IMapService, MapService>();
+        services.AddScoped<IGameSessionService, GameSessionService>();
 
         services.AddSingleton<ISocketHandler, SocketHandler>();
 
         services.AddSingleton<IUserMessagesNotifier, UserMessagesNotifier>();
 
         services.AddSingleton<IGameSessionSocketHelper, GameSessionSocketHelper>();
+
+        services.AddScoped<IGameSessionHandler, StepSocketMessageHandler>();
     }
 
     private static void ConfigureFluentValidation(IServiceCollection services)

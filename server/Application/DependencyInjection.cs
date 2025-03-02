@@ -59,6 +59,8 @@ public static class DependencyInjection
 
         services.AddScoped<IGameInitializer, GameInitializer>();
         services.AddScoped<IGameSessionOrchestrator, GameSessionOrchestrator>();
+        services.AddScoped<IGameFinisher, GameFinisher>();
+        services.AddScoped<IGameService, GameService>();
     }
 
     private static void ConfigureFluentValidation(IServiceCollection services)

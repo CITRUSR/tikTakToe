@@ -33,6 +33,10 @@ public static class DependencyInjection
         services.AddScoped<IUserService, UserService>();
 
         services.AddSingleton<ITokenProvider, TokenProvider>();
+        services.AddSingleton<
+            IGameSessionCancellationTokenProvider,
+            GameSessionCancellationTokenProvider
+        >();
 
         services.AddScoped<IAuthService, AuthService>();
 

@@ -7,6 +7,7 @@ public interface IUnitOfWork : IDisposable
     IUserStatRepository UserStatRepository { get; }
     IRoomRepository RoomRepository { get; }
     IGameSessionRepository GameSessionRepository { get; }
+    IMapRepository MapRepository { get; }
 
     void BeginTransaction();
     void CommitTransaction();

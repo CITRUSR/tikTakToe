@@ -10,6 +10,7 @@ public class UnitOfWork : IUnitOfWork
     public IUserStatRepository UserStatRepository { get; }
     public IRoomRepository RoomRepository { get; }
     public IGameSessionRepository GameSessionRepository { get; }
+    public IMapRepository MapRepository { get; }
     private readonly IDbConnection _connection;
     private IDbTransaction _transaction;
     private bool _isDisposed;
@@ -20,7 +21,8 @@ public class UnitOfWork : IUnitOfWork
         IRefreshTokenRepository refreshTokenRepository,
         IUserStatRepository userStatRepository,
         IRoomRepository roomRepository,
-        IGameSessionRepository gameSessionRepository
+        IGameSessionRepository gameSessionRepository,
+        IMapRepository mapRepository
     )
     {
         UserRepository = userRepository;

@@ -53,6 +53,8 @@ public static class DependencyInjection
 
         services.AddSingleton<IGameRules, GameRules>();
 
+        services.AddScoped<IRoomHandler, StartSocketMessageHandler>();
+
         services.AddSingleton<IGameSessionSocketHelper, GameSessionSocketHelper>();
 
         services.AddScoped<IGameSessionHandler, StepSocketMessageHandler>();

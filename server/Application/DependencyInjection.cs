@@ -58,6 +58,7 @@ public static class DependencyInjection
         services.AddScoped<IGameSessionHandler, StepSocketMessageHandler>();
 
         services.AddScoped<IGameInitializer, GameInitializer>();
+        services.AddScoped<IGameSessionOrchestrator, GameSessionOrchestrator>();
     }
 
     private static void ConfigureFluentValidation(IServiceCollection services)

@@ -21,6 +21,7 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
+        ApplicationMapsterConfig.Configure();
         ConfigureFluentValidation(services);
         ConfigureServices(services);
 
@@ -40,6 +41,8 @@ public static class DependencyInjection
         services.AddScoped<IRoomService, RoomService>();
 
         services.AddScoped<IMapService, MapService>();
+
+        services.AddSingleton<IUserMessagesNotifier, UserMessagesNotifier>(); //
     }
 
     private static void ConfigureFluentValidation(IServiceCollection services)

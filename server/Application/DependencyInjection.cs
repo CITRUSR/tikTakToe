@@ -51,6 +51,8 @@ public static class DependencyInjection
 
         services.AddSingleton<IUserMessagesNotifier, UserMessagesNotifier>();
 
+        services.AddSingleton<IGameRules, GameRules>();
+
         services.AddSingleton<IGameSessionSocketHelper, GameSessionSocketHelper>();
 
         services.AddScoped<IGameSessionHandler, StepSocketMessageHandler>();

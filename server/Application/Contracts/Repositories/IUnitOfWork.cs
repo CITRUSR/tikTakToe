@@ -6,6 +6,7 @@ public interface IUnitOfWork : IDisposable
     IRefreshTokenRepository RefreshTokenRepository { get; }
     IUserStatRepository UserStatRepository { get; }
     IRoomRepository RoomRepository { get; }
+    IGameSessionRepository GameSessionRepository { get; }
 
     void BeginTransaction();
     void CommitTransaction();

@@ -76,6 +76,8 @@ public static class DependencyInjection
         services.AddScoped<IUserStatRepository, UserStatRepository>();
         services.AddScoped<IRoomRepository, LocalRoomRepository>();
 
+        services.AddSingleton<IGameSessionRepository, LocalGameSessionRepository>();
+
         services.Configure<AuthOptionsConfig>(configuration.GetSection("Jwt"));
         services.AddSingleton<IAuthOptions, AuthOptions>();
     }

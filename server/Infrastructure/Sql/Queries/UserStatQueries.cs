@@ -5,7 +5,7 @@ namespace server.Infrastructure.Sql.Queries;
 public static class UserStatQueries
 {
     public static readonly string AllColumns =
-        $"{UserStatTable.UserId}, {UserStatTable.Wins}, {UserStatTable.Losses}, {UserStatTable.GamesCount}";
+        $"{UserStatTable.UserId}, {UserStatTable.Wins}, {UserStatTable.Losses}, {UserStatTable.GamesCount} AS gamesCount";
 
     public static readonly string GetAll =
         @$"
@@ -38,10 +38,9 @@ public static class UserStatQueries
         SELECT updated_stats.{UserStatTable.UserId},
         updated_stats.{UserStatTable.Wins},
         updated_stats.{UserStatTable.Losses},
-        updated_stats.{UserStatTable.GamesCount},
+        updated_stats.gamesCount,
         user_data.{UserTable.Id},
-        user_data.{UserTable.Nickname},
-            user_data.{UserTable.Password}
+        user_data.{UserTable.Nickname}
         FROM user_data
         JOIN updated_stats ON updated_stats.{UserStatTable.UserId} = user_data.{UserTable.Id}
     ";

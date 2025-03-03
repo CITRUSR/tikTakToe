@@ -7,6 +7,7 @@ using server.Application.Options;
 using server.Infrastructure.Factories;
 using server.Infrastructure.Options;
 using server.Infrastructure.Repositories;
+using server.Infrastructure.Storages;
 using server.Infrastructure.Utils.Constraints.Unique;
 
 namespace server.Infrastructure;
@@ -65,12 +66,19 @@ public static class DependencyInjection
             }
         );
 
+        services.AddSingleton<IRoomStorage, RoomStorage>();
+        services.AddSingleton<IRoomConnectionStorage, RoomConnectionStorage>();
+
         services.AddSingleton<IUniqueConstraintChecker, PostgresUniqueConstraintChecker>();
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IUserStatRepository, UserStatRepository>();
+        services.AddScoped<IRoomRepository, LocalRoomRepository>();
+
+        services.AddSingleton<IGameSessionRepository, LocalGameSessionRepository>();
+        services.AddSingleton<IMapRepository, LocalMapRepository>();
 
         services.Configure<AuthOptionsConfig>(configuration.GetSection("Jwt"));
         services.AddSingleton<IAuthOptions, AuthOptions>();
